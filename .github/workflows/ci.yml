@@ -36,7 +36,7 @@ jobs:
     
     - name: Check if server is running
       run: |
-        curl -f http://localhost:8181/ || cat app/server.log
+        curl -f http://localhost:8181/ 
     - name: Run tests
       run: |
         python -m pytest tests/ -v
