@@ -56,5 +56,5 @@ jobs:
           echo "Start app"
           sudo systemctl restart app
 
-          echo "Check: http://app.turmanidze.course.prafdin.ru
+          echo "Check: http://app.turmanidze.course.prafdin.ru"
           
