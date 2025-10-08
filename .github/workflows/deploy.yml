@@ -17,6 +17,14 @@ jobs:
       with:
         python-version: '3.11'
 
+    - name: Check what secrets are available
+      run: |
+        echo "=== Checking Secrets ==="
+        echo "SSH_HOST exists: ${{ secrets.SSH_HOST != '' }}"
+        echo "SSH_PORT exists: ${{ secrets.SSH_PORT != '' }}"
+        echo "SSH_USERNAME exists: ${{ secrets.SSH_USERNAME != '' }}"
+        echo "SSH_PRIVATE_KEY exists: ${{ secrets.SSH_PRIVATE_KEY != '' }}"
+        
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
