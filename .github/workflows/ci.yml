@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ master, lab2 ]
+    branches: [ webhook, github-actions ]
   pull_request:
-    branches: [ master ]
+    branches: [ webhook ]
 
 jobs:
   test:
