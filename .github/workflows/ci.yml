@@ -29,7 +29,16 @@ jobs:
       run: |
         python -m playwright install
         python -m playwright install-deps  
+        
+    - name: Start application
+      run: |
+        cd app  
+        nohup python -m uvicorn main:app --host 0.0.0.0 --port 8181 & 
+        sleep 10 
     
+    - name: Check if server is running
+      run: |
+        curl -f http://localhost:8181/ || cat app/server.log
     - name: Run tests
       run: |
         python -m pytest tests/ -v
