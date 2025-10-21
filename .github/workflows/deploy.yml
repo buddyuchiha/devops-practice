@@ -30,7 +30,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Execute remote SSH commands using SSH key
+    - name: Deploy Docker container via ssh
       uses: appleboy/ssh-action@v1
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -40,21 +40,22 @@ jobs:
         script: |
           echo "Starting deployment"
 
-          echo "Inserting into project"
-          cd /home/user/Desktop/lab1/catty-reminders-app 
+          echo "Login ghcr"
+          echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+ 
+          echo "Pulling"
+          docker pull ghcr.io/${{ github.repository }}/catty-reminders:docker
 
-          echo "Fetching"
-          git fetch origin
-          git reset --hard origin/github-actions
-
-          echo "Dependencies"
-          rm -rf venv
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-
+          echo "Delete old container"
+          docker stop catty-reminders || True
+          docker rm catty-reminders || True
+          
           echo "Start app"
-          sudo systemctl restart app
+          docker run -d \
+            --name catty-reminders \
+            -p 8181:8181 \
+            --restart unless-stopped \
+            ghcr.io/buddyuchiha/catty-reminders-app/catty-reminders:docker
 
           echo "Check: http://app.turmanidze.course.prafdin.ru"
           
