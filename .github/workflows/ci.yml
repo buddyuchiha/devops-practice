@@ -2,7 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ webhook, github-actions ]
+    branches: [ webhook, github-actions, docker ]
   pull_request:
     branches: [ webhook ]
 
