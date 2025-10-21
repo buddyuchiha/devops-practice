@@ -44,14 +44,14 @@ jobs:
           echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
  
           echo "Pulling"
-          docker pull ghcr.io/${{ github.repository }}/catty-reminders:docker
+          sudo docker pull ghcr.io/${{ github.repository }}/catty-reminders:docker
 
           echo "Delete old container"
-          docker stop catty-reminders || True
-          docker rm catty-reminders || True
+          sudo docker stop catty-reminders || True
+          sudo docker rm catty-reminders || True
           
           echo "Start app"
-          docker run -d \
+          sudo docker run -d \
             --name catty-reminders \
             -p 8181:8181 \
             --restart unless-stopped \
