@@ -7,8 +7,6 @@ services:
       - ./config.json:/app/config.json
     depends_on:
       - db
-    networks:
-      - app-network
 
   db:
     image: mariadb:10.11
@@ -17,11 +15,7 @@ services:
       MYSQL_DATABASE: catty_reminders
     volumes:
       - db_data:/var/lib/mysql
-    networks:
-      - app-network
+    restart: unless-stopped
 
 volumes:
   db_data:
-
-networks:
-  app-network:
