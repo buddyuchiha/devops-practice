@@ -1,1 +1,17 @@
-
+ services:
+   frontend:
+     image: example/webapp
+     networks:
+       − front−tier
+       − back−tier
+   backend:
+     image: example/backend
+     volumes:
+       − db−data:/etc/data
+     networks:
+       − back−tier
+   volumes:
+     db−data:
+   networks:
+     front−tier:
+     back−tier:
