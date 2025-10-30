@@ -1,17 +1,27 @@
- services:
-   frontend:
-     image: example/webapp
-     networks:
-       − front−tier
-       − back−tier
-   backend:
-     image: example/backend
-     volumes:
-       − db−data:/etc/data
-     networks:
-       − back−tier
-   volumes:
-     db−data:
-   networks:
-     front−tier:
-     back−tier:
+services:
+  web:
+    image: ghcr.io/buddyuchiha/catty-reminders-app/catty-reminders:docker
+    ports:
+      - "8181:8181"
+    volumes:
+      - ./config.json:/app/config.json
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mariadb:10.11
+    environment:
+      MYSQL_ROOT_PASSWORD: mypass
+      MYSQL_DATABASE: catty_reminders
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
