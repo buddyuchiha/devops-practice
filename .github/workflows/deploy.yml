@@ -39,21 +39,17 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           echo "=== Starting Docker Compose Deployment ==="
-
-          cd /home/user/Desktop/lab1/catty-reminders-app 
-          
-          echo "${{ secrets.TOKEN }}" | sudo -S docker login ghcr.io -u "${{ github.actor }}" --password-stdin
           
           echo "Pulling latest images..."
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose pull
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose -f /home/ubuntu/catty-reminders-app/docker-compose.yml pulll
           
           echo "Stopping old stack..."
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose down
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose -f /home/ubuntu/catty-reminders-app/docker-compose.yml down
           
           echo "Starting new stack..."
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose up -d
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose -f /home/ubuntu/catty-reminders-app/docker-compose.yml up -d
           
           echo "Checking stack status..."
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose ps
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose -f /home/ubuntu/catty-reminders-app/docker-compose.yml ps
           
           echo "Deployment completed! Check: http://app.turmanidze.course.prafdin.ru"
