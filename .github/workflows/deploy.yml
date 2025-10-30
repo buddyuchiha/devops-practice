@@ -44,7 +44,7 @@ jobs:
           echo "${{ secrets.VM_PASS }}" | sudo -S docker compose -f /home/user/Desktop/lab1/catty-reminders-app/docker-compose.yml pull
           
           echo "Stopping old stack..."
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose -f /home/user/Desktop/lab1/catty-reminders-app/docker-compose.yml down
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose -f /home/user/Desktop/lab1/catty-reminders-app/docker-compose.yml stop
           
           echo "Starting new stack..."
           echo "${{ secrets.VM_PASS }}" | sudo -S docker compose -f /home/user/Desktop/lab1/catty-reminders-app/docker-compose.yml up -d
