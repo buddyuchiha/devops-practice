@@ -1,6 +1,6 @@
 services:
   web:
-    image: ghcr.io/buddyuchiha/catty-reminders-app/catty-reminders:docker-compose
+    image: ghcr.io/buddyuchiha/catty-reminders-app/catty-reminders:${IMAGE_TAG:-docker-compose}
     ports:
       - "8181:8181"
     volumes:
