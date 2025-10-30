@@ -30,7 +30,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Deploy Docker container via ssh
+    - name: Deploy Docker Compose container via ssh
       uses: appleboy/ssh-action@v1
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -38,24 +38,20 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          echo "Starting deployment"
-
-          echo "Login ghcr"
-          echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
- 
-          echo "Pulling"
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker pull ghcr.io/${{ github.repository }}/catty-reminders:docker
-
-          echo "Delete old container"
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker stop catty-reminders || True
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker rm catty-reminders || True
+          echo "=== Starting Docker Compose Deployment ==="
           
-          echo "Start app"
-          echo "${{ secrets.VM_PASS }}" | sudo -S docker run -d \
-            --name catty-reminders \
-            -p 8181:8181 \
-            --restart unless-stopped \
-            ghcr.io/buddyuchiha/catty-reminders-app/catty-reminders:docker
-
-          echo "Check: http://app.turmanidze.course.prafdin.ru"
+          echo "${{ secrets.TOKEN }}" | sudo -S docker login ghcr.io -u "${{ github.actor }}" --password-stdin
           
+          echo "Pulling latest images..."
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose pull
+          
+          echo "Stopping old stack..."
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose down
+          
+          echo "Starting new stack..."
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose up -d
+          
+          echo "Checking stack status..."
+          echo "${{ secrets.VM_PASS }}" | sudo -S docker compose ps
+          
+          echo "Deployment completed! Check: http://app.turmanidze.course.prafdin.ru"
