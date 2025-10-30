@@ -2,9 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ webhook, github-actions, docker, docker-compose ]
-  pull_request:
-    branches: [ webhook ]
+    branches: [ docker-compose ]
 
 jobs:
   test:
